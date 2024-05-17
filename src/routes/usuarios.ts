@@ -6,22 +6,6 @@ import { getAll } from '../services/usuarios';
 
 const router = express.Router();
 
-router.get('/inicializar', (_req, res) => {
-  const query: string = `CREATE TABLE IF NOT EXISTS usuarios(
-    id TEXT PRIMARY KEY NOT NULL,
-    email TEXT NOT NULL UNIQUE,
-    nombre TEXT NOT NULL
-  );`;
-
-  try {
-    const result = db.exec(query);
-    console.log(result);
-    res.send('Tabla usuarios creada');
-  } catch(err) {
-    res.status(500).send({ message: 'Hubo un error al crear tabla usuarios' });
-  }
-});
-
 router.get('/', (_req, res) => {
   getAll()
   .then( rows => {

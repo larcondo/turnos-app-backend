@@ -1,33 +1,10 @@
 import express from 'express';
 import crypto from 'crypto';
-import db from '../database';
 import { TurnBody, TurnRecord, TurnStates } from '../types';
 import { validateTurnBody } from '../middlewares/turnos';
 import turnService from '../services/turnos';
 
 const router = express.Router();
-
-router.get('/inicializar', (_req, res) => {
-  const query: string = `CREATE TABLE IF NOT EXISTS turnos(
-    id TEXT PRIMARY KEY NOT NULL,
-    cancha TEXT,
-    solicitado_por TEXT,
-    confirmado_por TEXT,
-    estado TEXT,
-    inicio TEXT,
-    fin TEXT,
-    updated_at TEXT NOT NULL,
-    created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-  );`;
-
-  try {
-    const result = db.exec(query);
-    console.log(result);
-    res.send('Tabla de turnos creada');
-  } catch(err) {
-    res.status(500).send({ message: 'Hubo un error al crear las tablas' });
-  }
-});
 
 // all
 router.get('/', async (_req, res) => {
