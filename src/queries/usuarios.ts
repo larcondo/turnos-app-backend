@@ -4,3 +4,7 @@ export const CREATE_USUARIOS_TABLE =
   email TEXT NOT NULL UNIQUE,
   nombre TEXT NOT NULL
 );`;
+
+export const ALL_USERS: string = 'SELECT * FROM usuarios';
+
+export const INSERT_ONE: string = 'INSERT INTO usuarios (id, email, nombre) VALUES (?,?,?)';
