@@ -2,11 +2,15 @@
 const PORT = process.env.PORT || 3010;
 // ---------------------------
 import express from 'express';
+import cors from 'cors';
 const app = express();
 import userRouter from './routes/usuarios';
 import turnRouter from './routes/turnos';
 import { createTurnosTable, createUsuariosTable } from './services/tables';
 
+app.use(cors({
+  origin: 'http://localhost:5173',
+}));
 app.use(express.json());
 
 createUsuariosTable()
