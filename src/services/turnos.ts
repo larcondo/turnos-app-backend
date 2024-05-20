@@ -8,9 +8,18 @@ type CountType = {
   cantidad: number;
 };
 
-const getAll = (): Promise<TurnRecord[] | Error> => {
+const getAll = (placeholders: string, values: string[]): Promise<TurnRecord[] | Error> => {
+  const NEW_QUERY: string = `SELECT id, cancha, estado, fecha, inicio, fin,
+  solicitado_por AS solicitadoPor, confirmado_por as confirmadoPor
+  FROM turnos
+  WHERE ${placeholders}
+  ORDER BY fecha ASC
+  LIMIT 20;`;
+
+  const QUERY: string = values.length > 0 ? NEW_QUERY : ALL_TURNS;
+
   return new Promise<TurnRecord[] | Error> ((resolve, reject) => {
-    db.all<TurnRecord>(ALL_TURNS, (err, rows) => {
+    db.all<TurnRecord>(QUERY, values, (err, rows) => {
       err
         ? reject(err)
         : resolve(rows);
@@ -47,9 +56,13 @@ const insertOne = (turn: TurnRecord): Promise<TurnRecord|Error> => {
   });
 };
 
-const count = ():Promise<number|Error> => {
+const count = (placeholders: string, values: string[]):Promise<number|Error> => {
+  const NEW_QUERY: string = `SELECT COUNT(*) AS cantidad FROM turnos WHERE ${placeholders};`;
+
+  const QUERY: string = values.length > 0 ? NEW_QUERY : COUNT_TOTAL_TURNS;
+
   return new Promise<number|Error>((resolve, reject) => {
-    db.get<CountType>(COUNT_TOTAL_TURNS, (err, row) => {
+    db.get<CountType>(QUERY, values, (err, row) => {
       err
         ? reject(err)
         : resolve(row.cantidad);

@@ -3,23 +3,38 @@ import crypto from 'crypto';
 import { TurnBody, TurnRecord, TurnStates } from '../types';
 import { validateTurnBody } from '../middlewares/turnos';
 import turnService from '../services/turnos';
+import { getQueryParams } from '../utils/turnos';
 
 const router = express.Router();
 
+const QUERY_LIMIT: number = 20;
+
 // all
-router.get('/', async (_req, res) => {
+router.get('/', async (req, res) => {
+  const p = getQueryParams(req.query);
+
   try {
-    const turnos = await turnService.getAll();
-    res.status(200).send(turnos);
+    const cantidad = await turnService.count(p.placeholders, p.values) as number;
+    const pages: number = Math.floor(cantidad/QUERY_LIMIT) + (cantidad%QUERY_LIMIT > 0 ? 1 : 0);
+    const turnos = await turnService.getAll(p.placeholders, p.values);
+    res.status(200).send({
+      cantidad,
+      pages,
+      offset: 0,
+      page: 1,
+      turnos
+    });
   } catch(err) {
     console.log(err);
     res.status(500).send({ message: 'Hubo un error al obtener los turnos' });
   }
 });
 
-router.get('/count', async (_req, res) => {
+router.get('/count', async (req, res) => {
+  const p = getQueryParams(req.query);
+
   try {
-    const cantidad = await turnService.count();
+    const cantidad = await turnService.count(p.placeholders, p.values);
     res.send({ cantidad });
   } catch(err) {
     console.log(err);

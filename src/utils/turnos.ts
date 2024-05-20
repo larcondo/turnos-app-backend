@@ -20,9 +20,49 @@ const isValidTime = (value: string): boolean => {
   return expresion.test(value);
 };
 
+interface QueryParams {
+  placeholders: string;
+  values: string[];
+}
+
+const getQueryParams = (query: object): QueryParams => {
+  const fields: string[] = [];
+  const values: string[] = [];
+
+  if ('cancha' in query && typeof query.cancha === 'string') {
+    fields.push('cancha=?');
+    values.push(query.cancha);
+  }
+
+  if ('estado' in query && typeof query.estado === 'string') {
+    fields.push('estado=?');
+    values.push(query.estado);
+  }
+
+  if ('fecha' in query && typeof query.fecha === 'string') {
+    fields.push('fecha=?');
+    values.push(query.fecha);
+  }
+
+  if ('solicito' in query && typeof query.solicito === 'string') {
+    fields.push('solicitado_por=?');
+    values.push(query.solicito);
+  }
+
+  if ('confirmo' in query && typeof query.confirmo === 'string') {
+    fields.push('confirmado_por=?');
+    values.push(query.confirmo);
+  }
+
+  const placeholders: string = fields.join(' AND ');  
+
+  return { placeholders, values };
+};
+
 export {
   isValidCancha,
   isValidDateTime,
   isValidDate,
   isValidTime,
+  getQueryParams,
 };
