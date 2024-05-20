@@ -4,14 +4,18 @@ export interface UserRecord {
   nombre: string;
 }
 
-export interface TurnRecord {
-  id: string;
+export interface TurnBasic {
   cancha: string;
+  estado: string;
+  fecha: string;
+  inicio: string;
+  fin: string;
+}
+
+export interface TurnRecord extends TurnBasic {
+  id: string;
   solicitadoPor: string | null;
   confirmadoPor: string | null;
-  estado: string;
-  inicio: string;
-  fin: string; 
 }
 
 export type TurnBody = Omit<TurnRecord, 'id'>;

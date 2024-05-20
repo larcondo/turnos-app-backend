@@ -1,31 +1,38 @@
 import {Request, Response, NextFunction} from 'express';
 import { TurnBody} from '../types';
-import { isValidCancha, isValidDateTime } from '../utils/turnos';
+import { isValidCancha, isValidDate, isValidTime } from '../utils/turnos';
 
 const validateTurnBody = (req: Request, res:  Response, next: NextFunction) => {
-  const body = req.body as TurnBody;
+  const { cancha, fecha, inicio, fin } = req.body as TurnBody;
 
   // Todos los campos
-  if ((!body.cancha) || (!body.inicio) || (!body.fin)) {
+  if ((!cancha) || (!inicio) || (!fin)) {
     return res.status(400).send({ message: 'Se requieren todos los campos [cancha, inicio, fin]' });
   }
   
   // Cancha valida
-  if (!isValidCancha(body.cancha)) {
+  if (!isValidCancha(cancha)) {
     return res.status(400).send({ message: 'La cancha no es válida' }); 
+  }
+
+  if (!isValidDate(fecha)) {
+    return res.status(400).send({
+      received: fecha,
+      message: 'fecha no es válida [YYYY-MM-DD]'
+    }); 
   }
   
   // Inicio y fin formatos validos
-  if (!isValidDateTime(body.inicio)) {
+  if (!isValidTime(inicio)) {
     return res.status(400).send({
-      received: body.inicio,
-      message: 'inicio no es válido [YYYY-MM-DD HH:MM]'
+      received: inicio,
+      message: 'inicio no es válido [HH:MM]'
     }); 
   }
-  if (!isValidDateTime(body.fin)) {
+  if (!isValidTime(fin)) {
     return res.status(400).send({
-      received: body.fin,
-      message: 'fin no es válido [YYYY-MM-DD HH:MM]'
+      received: fin,
+      message: 'fin no es válido [HH:MM]'
     });
   }
 

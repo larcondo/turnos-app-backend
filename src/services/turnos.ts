@@ -2,7 +2,7 @@ import db from '../database';
 import { ALL_TURNS, TURN_BY_ID, COUNT_TOTAL_TURNS, INSERT_ONE,
   DELETE_BY_ID, UPDATE_BY_ID, COUNT_SPECIFIC_TURN
 } from '../queries/turnos';
-import { TurnRecord } from '../types';
+import { TurnRecord, TurnStates } from '../types';
 
 type CountType = {
   cantidad: number;
@@ -33,6 +33,7 @@ const insertOne = (turn: TurnRecord): Promise<TurnRecord|Error> => {
     turn.id,
     turn.cancha,
     turn.estado,
+    turn.fecha,
     turn.inicio,
     turn.fin
   ];
@@ -79,7 +80,7 @@ const deleteOne = (id: string): Promise<number|Error> => {
 const updateOne = (turn: TurnRecord): Promise<TurnRecord|Error> => {
   const params: Array<string|null> = [
     turn.cancha, turn.estado,
-    turn.inicio, turn.fin,
+    turn.fecha, turn.inicio, turn.fin,
     turn.solicitadoPor, turn.confirmadoPor,
     turn.id
   ];
@@ -93,6 +94,37 @@ const updateOne = (turn: TurnRecord): Promise<TurnRecord|Error> => {
   });
 };
 
+interface RequestedBy {
+  userId: string;
+  turnId: string;
+}
+
+const setRequestedBy = (value: RequestedBy): Promise<number|Error> => {
+  const QUERY: string = 'UPDATE turnos SET solicitado_por=?, estado=?, updated_at=CURRENT_TIMESTAMP WHERE id=? AND solicitado_por IS NULL';
+  const params: Array<string> = [value.userId, TurnStates.Solicitado, value.turnId];
+
+  return new Promise<number|Error>((resolve, reject) => {
+    db.run(QUERY, params, function(err) {
+      err
+        ? reject(err)
+        : resolve(this.changes);
+    });
+  });
+};
+
+const setConfirmBy = (tid: string, uid: string): Promise<number|Error> => {
+  const QUERY: string = 'UPDATE turnos SET confirmado_por=?, estado=?, updated_at=CURRENT_TIMESTAMP WHERE id=? AND confirmado_por IS NULL';
+  const params: Array<string> = [uid, TurnStates.Confirmado, tid];
+
+  return new Promise<number|Error>((resolve, reject) => {
+    db.run(QUERY, params, function(err) {
+      err
+        ? reject(err)
+        : resolve(this.changes);
+    });
+  });
+};
+
 export default {
   getAll,
   getById,
@@ -100,5 +132,7 @@ export default {
   count,
   countTurns,
   updateOne,
-  deleteOne
+  deleteOne,
+  setRequestedBy,
+  setConfirmBy,
 };

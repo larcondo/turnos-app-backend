@@ -20,7 +20,7 @@ router.get('/', async (_req, res) => {
 router.get('/count', async (_req, res) => {
   try {
     const cantidad = await turnService.count();
-    res.send({ qty: cantidad });
+    res.send({ cantidad });
   } catch(err) {
     console.log(err);
     res.status(500).send({ message: 'Hubo un error al obtener cantidad' });
@@ -60,11 +60,12 @@ router.put('/:id', async (req, res) => {
 // add
 router.post('/', validateTurnBody, async (req, res) => {
   // middleware validations
-  const { cancha, inicio, fin } = req.body as TurnBody;
+  const { cancha, fecha, inicio, fin } = req.body as TurnBody;
   const id = crypto.randomUUID();
   const newTurn: TurnRecord = {
     id,
     cancha,
+    fecha,
     inicio,
     fin,
     estado: TurnStates.Disponible,
@@ -100,6 +101,50 @@ router.delete('/:id', async (req, res) => {
   } catch(err) {
     console.log(err);
     res.status(500).send({ message: 'Hubo un error al eliminar turno' });
+  }
+});
+
+router.post('/solicitar/:id', async (req, res) => {
+  // middleware auth (header ok and id exists)
+  // middleware if is turn available
+  const auth = req.headers.authorization;
+  const userId = auth?.split(' ')[1];
+  const turnId = req.params.id;
+
+  if (!userId) return res.sendStatus(401);
+
+  try {
+    const result = await turnService.setRequestedBy({ userId, turnId });
+    
+    return (result as number > 0)
+    ? res.status(200).send({ message: `Turno solicitado exitosamente.`})
+    : res.status(401).send({ message: `Turno no disponible.`});
+
+  } catch(err) {
+    console.log(err);
+    return res.status(500).send({ message: 'Hubo un error al solicitar el turno.' });
+  }
+});
+
+router.post('/confirmar/:id', async (req, res) => {
+  // middleware auth (header ok and id exists)
+  // middleware if is turn available
+  const auth = req.headers.authorization;
+  const userId = auth?.split(' ')[1];
+  const turnId = req.params.id;
+
+  if (!userId) return res.sendStatus(401);
+
+  try {
+    const result = await turnService.setConfirmBy(turnId, userId);
+    
+    return (result as number > 0)
+    ? res.status(200).send({ message: `Turno confirmado exitosamente.`})
+    : res.status(401).send({ message: `Turno ya confirmado.`});
+
+  } catch(err) {
+    console.log(err);
+    return res.status(500).send({ message: 'Hubo un error al confirmar el turno.' });
   }
 });
 

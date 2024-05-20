@@ -10,7 +10,19 @@ const isValidDateTime = (value: string): boolean => {
   return expresion.test(value);
 };
 
+const isValidDate = (value: string): boolean => {
+  const expresion = /^\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$/;
+  return expresion.test(value);
+};
+
+const isValidTime = (value: string): boolean => {
+  const expresion = /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
+  return expresion.test(value);
+};
+
 export {
   isValidCancha,
   isValidDateTime,
+  isValidDate,
+  isValidTime,
 };

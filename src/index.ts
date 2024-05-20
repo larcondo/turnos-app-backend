@@ -6,6 +6,7 @@ import cors from 'cors';
 const app = express();
 import userRouter from './routes/usuarios';
 import turnRouter from './routes/turnos';
+import demoRouter from './routes/demo';
 import { createTurnosTable, createUsuariosTable } from './services/tables';
 
 app.use(cors({
@@ -23,6 +24,7 @@ createTurnosTable()
 
 app.use('/turnos', turnRouter);
 app.use('/usuarios', userRouter);
+app.use('/demo', demoRouter);
 
 app.get('/ping', (_req, res) => {
   res.send('pong');
