@@ -1,9 +1,13 @@
 import express from 'express';
 import crypto from 'crypto';
 import { TurnBody, TurnRecord, TurnStates } from '../types';
-import { validateTurnBody } from '../middlewares/turnos';
+import { validateTurnBody, checkAuthorization } from '../middlewares/turnos';
 import turnService from '../services/turnos';
 import { getQueryParams } from '../utils/turnos';
+
+// controllers
+import solicitarTurno from '../controllers/solicitarTurno';
+import confirmarTurno from '../controllers/confirmarTurno';
 
 const router = express.Router();
 
@@ -119,48 +123,8 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
-router.post('/solicitar/:id', async (req, res) => {
-  // middleware auth (header ok and id exists)
-  // middleware if is turn available
-  const auth = req.headers.authorization;
-  const userId = auth?.split(' ')[1];
-  const turnId = req.params.id;
+router.post('/solicitar/:id', checkAuthorization, solicitarTurno);
 
-  if (!userId) return res.sendStatus(401);
-
-  try {
-    const result = await turnService.setRequestedBy({ userId, turnId });
-    
-    return (result as number > 0)
-    ? res.status(200).send({ message: `Turno solicitado exitosamente.`})
-    : res.status(401).send({ message: `Turno no disponible.`});
-
-  } catch(err) {
-    console.log(err);
-    return res.status(500).send({ message: 'Hubo un error al solicitar el turno.' });
-  }
-});
-
-router.post('/confirmar/:id', async (req, res) => {
-  // middleware auth (header ok and id exists)
-  // middleware if is turn available
-  const auth = req.headers.authorization;
-  const userId = auth?.split(' ')[1];
-  const turnId = req.params.id;
-
-  if (!userId) return res.sendStatus(401);
-
-  try {
-    const result = await turnService.setConfirmBy(turnId, userId);
-    
-    return (result as number > 0)
-    ? res.status(200).send({ message: `Turno confirmado exitosamente.`})
-    : res.status(401).send({ message: `Turno ya confirmado.`});
-
-  } catch(err) {
-    console.log(err);
-    return res.status(500).send({ message: 'Hubo un error al confirmar el turno.' });
-  }
-});
+router.post('/confirmar/:id', checkAuthorization, confirmarTurno);
 
 export default router;

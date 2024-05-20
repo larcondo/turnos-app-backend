@@ -22,6 +22,10 @@ export type TurnBody = Omit<TurnRecord, 'id'>;
 
 export type UserBody = Omit<UserRecord, 'id'>;
 
+export interface AuthBodyBasic {
+  userId: string;
+}
+
 export enum TurnStates {
   Disponible = 'disponible',
   Solicitado = 'solicitado',

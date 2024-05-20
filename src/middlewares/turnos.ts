@@ -1,5 +1,5 @@
-import {Request, Response, NextFunction} from 'express';
-import { TurnBody} from '../types';
+import { Request, Response, NextFunction, RequestHandler } from 'express';
+import { TurnBody, AuthBodyBasic } from '../types';
 import { isValidCancha, isValidDate, isValidTime } from '../utils/turnos';
 
 const validateTurnBody = (req: Request, res:  Response, next: NextFunction) => {
@@ -39,6 +39,22 @@ const validateTurnBody = (req: Request, res:  Response, next: NextFunction) => {
   return next();
 };
 
+const checkAuthorization: RequestHandler<unknown, unknown, AuthBodyBasic, unknown> = (req, res, next) => {
+  const authorization = req.headers.authorization;
+
+  if (authorization) {
+    const auth_array = authorization.split(' ');
+    if (auth_array[0] !== 'Bearer') return res.sendStatus(401);
+
+    req.body.userId = auth_array[1];
+
+    return next();
+  } else {
+    return res.sendStatus(401);
+  }
+};
+
 export {
   validateTurnBody,
+  checkAuthorization,
 };
