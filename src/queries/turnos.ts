@@ -26,7 +26,7 @@ export const COUNT_TOTAL_TURNS: string = 'SELECT COUNT(*) AS cantidad FROM turno
 export const COUNT_SPECIFIC_TURN: string = `
 SELECT COUNT(*) AS cantidad
 FROM turnos
-WHERE cancha=? AND inicio=? AND fin=?;
+WHERE cancha=? AND fecha=? AND inicio=? AND fin=?;
 `;
 
 export const INSERT_ONE: string =

@@ -1,4 +1,4 @@
-import { CanchasDisponibles } from '../types';
+import { CanchasDisponibles, QueryParams } from '../types';
 
 const isValidCancha = (value: string): boolean => {
   const result: boolean = Object.values(CanchasDisponibles).includes(value as CanchasDisponibles);
@@ -19,11 +19,6 @@ const isValidTime = (value: string): boolean => {
   const expresion = /^(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9])$/;
   return expresion.test(value);
 };
-
-interface QueryParams {
-  placeholders: string;
-  values: string[];
-}
 
 const getQueryParams = (query: object): QueryParams => {
   const fields: string[] = [];

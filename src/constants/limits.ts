@@ -1,0 +1,1 @@
+export const QUERY_LIMIT: number = 20;

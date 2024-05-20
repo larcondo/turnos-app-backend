@@ -26,6 +26,11 @@ export interface AuthBodyBasic {
   userId: string;
 }
 
+export interface QueryParams {
+  placeholders: string;
+  values: string[];
+}
+
 export enum TurnStates {
   Disponible = 'disponible',
   Solicitado = 'solicitado',

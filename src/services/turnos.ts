@@ -70,9 +70,9 @@ const count = (placeholders: string, values: string[]):Promise<number|Error> => 
   });
 };
 
-const countTurns = (c: string, i: string, f: string):Promise<number|Error> => {
+const countTurns = (c: string, d: string, i: string, f: string):Promise<number|Error> => {
   return new Promise<number|Error>((resolve, reject) => {
-    db.get<CountType>(COUNT_SPECIFIC_TURN, [c, i, f], (err, row) => {
+    db.get<CountType>(COUNT_SPECIFIC_TURN, [c, d, i, f], (err, row) => {
       err
         ? reject(err)
         : resolve(row.cantidad);
