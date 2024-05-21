@@ -4,8 +4,8 @@
   "description": "Backend de app turnos",
   "main": "src/index.ts",
   "scripts": {
-    "tsc": "tsc",
-    "dev": "ts-node-dev src/index.ts",
+    "tsc": "tsc && tsc-alias",
+    "dev": "ts-node-dev -r tsconfig-paths/register src/index.ts",
     "lint": "eslint --ext .ts .",
     "start": "node build/index.js"
   },
@@ -20,6 +20,8 @@
     "eslint": "^8.57.0",
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
+    "tsc-alias": "^1.8.10",
+    "tsconfig-paths": "^4.2.0",
     "typescript": "^5.4.5"
   },
   "dependencies": {

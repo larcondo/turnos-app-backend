@@ -1,6 +1,6 @@
 import db from '../database';
-import { CREATE_TURNOS_TABLE } from '../queries/turnos';
-import { CREATE_USUARIOS_TABLE } from '../queries/usuarios';
+import { CREATE_TURNOS_TABLE } from '@queries/turnos';
+import { CREATE_USUARIOS_TABLE } from '@queries/usuarios';
 
 const TABLE_EXISTS: string = 'SELECT name FROM sqlite_master WHERE type="table" AND name=?';
 

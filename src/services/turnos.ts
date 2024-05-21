@@ -1,7 +1,7 @@
 import db from '../database';
 import { ALL_TURNS, TURN_BY_ID, COUNT_TOTAL_TURNS, INSERT_ONE,
   DELETE_BY_ID, UPDATE_BY_ID, COUNT_SPECIFIC_TURN
-} from '../queries/turnos';
+} from '@queries/turnos';
 import { TurnRecord, TurnStates } from '../types';
 
 type CountType = {

@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import turnService from '../services/turnos';
-import { getQueryParams } from '../utils/turnos';
+import turnService from '@services/turnos';
+import { getQueryParams } from '@utils/turnos';
 
 const countTurnos: RequestHandler<
   unknown,

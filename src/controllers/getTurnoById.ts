@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import turnService from '../services/turnos';
+import turnService from '@services/turnos';
 
 const getTurnoById: RequestHandler<
   { id: string },

@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import { AuthBodyBasic } from '../types';
-import turnService from '../services/turnos';
+import turnService from '@services/turnos';
 
 const solicitarTurno: RequestHandler<
   { id: string },

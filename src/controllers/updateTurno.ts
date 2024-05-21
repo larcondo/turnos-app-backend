@@ -1,5 +1,5 @@
 import { RequestHandler } from 'express';
-import turnService from '../services/turnos';
+import turnService from '@services/turnos';
 import { TurnBody, TurnRecord } from '../types';
 
 const updateTurno: RequestHandler<

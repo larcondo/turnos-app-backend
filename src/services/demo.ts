@@ -1,5 +1,5 @@
 import db from '../database';
-import { INSERT_ONE } from '../queries/turnos';
+import { INSERT_ONE } from '@queries/turnos';
 import { TurnRecord } from '../types';
 
 interface QueryResult {

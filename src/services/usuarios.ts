@@ -1,6 +1,6 @@
 import db from '../database';
 import { UserRecord } from '../types';
-import { ALL_USERS, INSERT_ONE } from '../queries/usuarios';
+import { ALL_USERS, INSERT_ONE } from '@queries/usuarios';
 
 const getAll = (): Promise<UserRecord[] | Error> => {
   return new Promise<UserRecord[] | Error> ((resolve, reject) => {
