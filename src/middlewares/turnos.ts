@@ -1,5 +1,6 @@
+import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
-import { TurnBody, AuthBodyBasic } from '../types';
+import { TurnBody, TokenPayload, TurnBodyWithAuth } from '../types';
 import { isValidCancha, isValidDate, isValidTime } from '../utils/turnos';
 
 const validateTurnBody = (req: Request, res:  Response, next: NextFunction) => {
@@ -39,18 +40,27 @@ const validateTurnBody = (req: Request, res:  Response, next: NextFunction) => {
   return next();
 };
 
-const checkAuthorization: RequestHandler<unknown, unknown, AuthBodyBasic, unknown> = (req, res, next) => {
+const checkAuthorization: RequestHandler<unknown, unknown, TurnBodyWithAuth, unknown> = (req, res, next) => {
   const authorization = req.headers.authorization;
+  if (!authorization) return res.sendStatus(401);
 
-  if (authorization) {
-    const auth_array = authorization.split(' ');
-    if (auth_array[0] !== 'Bearer') return res.sendStatus(401);
+  const auth_array = authorization.split(' ');
+  if (auth_array[0] !== 'Bearer') return res.sendStatus(401);
 
-    req.body.userId = auth_array[1];
+  const token = auth_array[1];
 
+  const secret: string|undefined = process.env.ACCESS_TOKEN_SECRET;
+
+  if (typeof secret !== 'string') return res.status(500).send({ message: 'Internal Server Error (Access Secret Undefined)' });
+
+  try {
+    const payload = jwt.verify(token, secret);
+    req.body.user = payload as TokenPayload;
     return next();
-  } else {
-    return res.sendStatus(401);
+  } catch(err) {
+    return (err instanceof JsonWebTokenError)
+      ? res.status(401).send({ message: 'invalid token'})
+      : res.sendStatus(500);
   }
 };
 

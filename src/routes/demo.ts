@@ -1,7 +1,7 @@
 import express from 'express';
 import { TurnRecord } from '../types';
-import demoService from '../services/demo';
-import { generateTurnosDemo } from '../utils/demoData';
+import demoService from '@services/demo';
+import { generateTurnosDemo } from '@utils/demoData';
 
 const router = express.Router();
 

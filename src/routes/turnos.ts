@@ -13,17 +13,17 @@ import confirmarTurno from '../controllers/confirmarTurno';
 
 const router = express.Router();
 
-router.get('/', getTurnos); // all or specific
+router.get('/', checkAuthorization, getTurnos); // all or specific
 
-router.get('/count', countTurnos);
+router.get('/count',checkAuthorization, countTurnos);
 
-router.get('/:id', getTurnoById); // get specific by id
+router.get('/:id', checkAuthorization, getTurnoById); // get specific by id
 
-router.put('/:id', updateTurno);  // update turn
+router.put('/:id', checkAuthorization, updateTurno);  // update turn
 
-router.post('/', validateTurnBody, createTurno);  // create new turn
+router.post('/', checkAuthorization, validateTurnBody, createTurno);  // create new turn
 
-router.delete('/:id', deleteTurno); // delete
+router.delete('/:id', checkAuthorization, deleteTurno); // delete
 
 router.post('/solicitar/:id', checkAuthorization, solicitarTurno);
 

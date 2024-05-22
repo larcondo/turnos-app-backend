@@ -15,11 +15,22 @@ const getAll = (): Promise<UserRecord[] | Error> => {
   });
 };
 
+const getByEmail = (email: string): Promise<UserRecord|Error> => {
+  const QUERY: string = 'SELECT id, nombre, email, password FROM usuarios WHERE email=?;';
+
+  return new Promise<UserRecord|Error>((resolve, reject) => {
+    db.get<UserRecord>(QUERY, [email], function(err, row) {
+      err ? reject(err) : resolve(row);
+    });
+  });
+};
+
 const insertOne = (user: UserRecord): Promise<UserRecord|Error> => {
   const params = [
     user.id,
     user.email,
-    user.nombre
+    user.nombre,
+    user.password,
   ];
 
   return new Promise<UserRecord|Error>((resolve, reject) => {
@@ -33,5 +44,6 @@ const insertOne = (user: UserRecord): Promise<UserRecord|Error> => {
 
 export default {
   getAll,
+  getByEmail,
   insertOne,
 };

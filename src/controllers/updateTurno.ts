@@ -1,17 +1,17 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
-import { TurnBody, TurnRecord } from '../types';
+import { TurnBodyWithAuth, TurnRecord } from '../types';
 
 const updateTurno: RequestHandler<
   { id: string },
   unknown,
-  TurnBody,
+  TurnBodyWithAuth,
   unknown
 > = async (req, res) => {
   const id = req.params.id;
-  const turn = req.body;
-  const toUpdate: TurnRecord = { id, ...turn };
-
+  const { user, ...resto} = req.body;
+  const toUpdate: TurnRecord = { id, ...resto };
+  
   try {
     const updated = await turnService.updateOne(toUpdate);
     res.status(200).send(updated);

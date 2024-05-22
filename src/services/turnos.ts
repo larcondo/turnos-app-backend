@@ -107,14 +107,9 @@ const updateOne = (turn: TurnRecord): Promise<TurnRecord|Error> => {
   });
 };
 
-interface RequestedBy {
-  userId: string;
-  turnId: string;
-}
-
-const setRequestedBy = (value: RequestedBy): Promise<number|Error> => {
+const setRequestedBy = (tid: string, uid: string): Promise<number|Error> => {
   const QUERY: string = 'UPDATE turnos SET solicitado_por=?, estado=?, updated_at=CURRENT_TIMESTAMP WHERE id=? AND solicitado_por IS NULL';
-  const params: Array<string> = [value.userId, TurnStates.Solicitado, value.turnId];
+  const params: Array<string> = [uid, TurnStates.Solicitado, tid];
 
   return new Promise<number|Error>((resolve, reject) => {
     db.run(QUERY, params, function(err) {

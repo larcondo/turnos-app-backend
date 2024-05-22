@@ -2,6 +2,7 @@ export interface UserRecord {
   id: string;
   email: string;
   nombre: string;
+  password: string;
 }
 
 export interface TurnBasic {
@@ -19,16 +20,30 @@ export interface TurnRecord extends TurnBasic {
 }
 
 export type TurnBody = Omit<TurnRecord, 'id'>;
+export interface TurnBodyWithAuth extends TurnBody {
+  user: TokenPayload
+}
 
-export type UserBody = Omit<UserRecord, 'id'>;
+export type UserBody = Omit<UserRecord, 'id'|'password'>;
+
+export interface RegisterUserBody {
+  email: string;
+  password: string;
+  nombre: string;
+}
 
 export interface AuthBodyBasic {
-  userId: string;
+  token: string;
 }
 
 export interface QueryParams {
   placeholders: string;
   values: string[];
+}
+
+export interface TokenPayload {
+  id: string;
+  email: string;
 }
 
 export enum TurnStates {

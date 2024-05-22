@@ -1,18 +1,18 @@
 import { RequestHandler } from 'express';
-import { AuthBodyBasic } from '../types';
 import turnService from '@services/turnos';
+import { TurnBodyWithAuth } from 'types';
 
 const solicitarTurno: RequestHandler<
   { id: string },
   unknown,
-  AuthBodyBasic,
+  TurnBodyWithAuth,
   unknown
 > = async (req, res) => {
-  const userId = req.body.userId;
+  const user = req.body.user;
   const turnId = req.params.id;
 
   try {
-    const result = await turnService.setRequestedBy({ userId, turnId });
+    const result = await turnService.setRequestedBy(turnId, user.id);
     
     return (result as number > 0)
     ? res.status(200).send({ message: `Turno solicitado exitosamente.`})

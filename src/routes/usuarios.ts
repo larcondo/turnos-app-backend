@@ -1,7 +1,10 @@
 import express from 'express';
-import crypto from 'crypto';
-import { UserBody, UserRecord } from '../types';
-import userService from '../services/usuarios';
+import userService from '@services/usuarios';
+import { checkLoginBody, checkRegisterBody } from '@middlewares/usuarios';
+
+import loginUsuario from '@controllers/loginUsuario';
+import registerUsuario from '@controllers/registerUsuario';
+
 
 const router = express.Router();
 
@@ -15,28 +18,7 @@ router.get('/', async (_req, res) => {
   }
 });
 
-router.post('/', async (req, res) => {
-  const { email, nombre } = req.body as UserBody;
-
-  if (!email || !nombre) {
-    res.status(400).send({ message: 'Email y nombre son requeridos' });
-    return;
-  }
-
-  const id = crypto.randomUUID();
-  const newUser: UserRecord = { id, email, nombre };
-
-  try {
-    const created = await userService.insertOne(newUser);
-    res.status(201).send(created);
-  } catch(err) {
-    console.log(err);
-    if (err instanceof Error && err.message.includes('SQLITE_CONSTRAINT')) {
-      res.status(400).send({ message: `Un usuario con el email ${email} ya existe.` });
-    } else {
-      res.status(500).send({ message: 'Hubo un error al crear el usuario' });
-    }
-  }
-});
+router.post('/login', checkLoginBody, loginUsuario);
+router.post('/register', checkRegisterBody, registerUsuario);
 
 export default router;
