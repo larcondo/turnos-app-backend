@@ -4,7 +4,7 @@ import { checkLoginBody, checkRegisterBody } from '@middlewares/usuarios';
 
 import loginUsuario from '@controllers/loginUsuario';
 import registerUsuario from '@controllers/registerUsuario';
-
+import demoUsuarios from '@controllers/demoUsuarios';
 
 const router = express.Router();
 
@@ -20,5 +20,6 @@ router.get('/', async (_req, res) => {
 
 router.post('/login', checkLoginBody, loginUsuario);
 router.post('/register', checkRegisterBody, registerUsuario);
+router.post('/demo', demoUsuarios);
 
 export default router;
