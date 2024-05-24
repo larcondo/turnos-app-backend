@@ -2,22 +2,26 @@ import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import authApp from 'authapp';
-import cors from 'cors';
+import cors, { CorsOptions } from 'cors';
 const app = express();
 
 // configure later on PM2?
 const API_PORT = process.env.API_PORT || 3010;
 const AUTH_PORT = process.env.AUTH_PORT || 4010;
 
+const allowedOrigins = ['http://localhost:5173'];
+const options: CorsOptions = {
+  origin: allowedOrigins,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+};
+
+app.use(cors(options));
+app.use(express.json());
+
 // import userRouter from './routes/usuarios';
 import turnRouter from './routes/turnos';
 import demoRouter from './routes/demo';
 import { createTurnosTable, createUsuariosTable } from './services/tables';
-
-app.use(cors({
-  origin: 'http://localhost:5173',
-}));
-app.use(express.json());
 
 createUsuariosTable()
 .then(result => console.log(result.message))
