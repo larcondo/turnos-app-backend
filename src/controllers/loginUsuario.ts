@@ -24,7 +24,7 @@ const loginUsuario: RequestHandler<
     const payload: TokenPayload = { id: row.id, email };
     const token = generateTokens(payload);
 
-    return res.status(200).send({ accessToken: token });
+    return res.status(200).send({ accessToken: token, email: row.email, nombre: row.nombre });
 
   } catch(err) {
     console.log(err);

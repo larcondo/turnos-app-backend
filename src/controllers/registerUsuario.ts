@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
 import userService from '@services/usuarios';
-import { RegisterUserBody } from 'types';
+import { RegisterUserBody, UserRecord } from 'types';
 
 const registerUsuario: RequestHandler<
   unknown,
@@ -15,7 +15,7 @@ const registerUsuario: RequestHandler<
     const id = crypto.randomUUID();
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const newUser = { id, email, nombre, password: hashedPassword };
+    const newUser: UserRecord = { id, email, nombre, password: hashedPassword };
 
     const created = await userService.insertOne(newUser);
 
