@@ -2,14 +2,16 @@ import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
 import { getQueryParams } from '@utils/turnos';
 import { QUERY_LIMIT } from '@constants/limits';
+import { TurnBodyWithAuth } from 'types';
 
 const getTurnos: RequestHandler<
   unknown,
   unknown,
-  unknown,
+  TurnBodyWithAuth,
   object
 > = async (req, res) => {
-  const p = getQueryParams(req.query);
+  const userId = req.body.user.id;
+  const p = getQueryParams(req.query, userId);
 
   try {
     const cantidad = await turnService.count(p.placeholders, p.values) as number;

@@ -20,7 +20,7 @@ const isValidTime = (value: string): boolean => {
   return expresion.test(value);
 };
 
-const getQueryParams = (query: object): QueryParams => {
+const getQueryParams = (query: object, userId: string|null = null): QueryParams => {
   const fields: string[] = [];
   const values: string[] = [];
 
@@ -47,6 +47,16 @@ const getQueryParams = (query: object): QueryParams => {
   if ('confirmo' in query && typeof query.confirmo === 'string') {
     fields.push('confirmado_por=?');
     values.push(query.confirmo);
+  }
+
+  if ('client' in query && userId) {
+    fields.push('solicitado_por=?');
+    values.push(userId);
+  }
+
+  if ('manager' in query && userId) {
+    fields.push('confirmado_por=?');
+    values.push(userId);
   }
 
   const placeholders: string = fields.join(' AND ');  
