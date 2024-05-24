@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
-import { RegisterUserBody } from 'types';
+import { RegisterUserBody, UserRoles, TurnBodyWithAuth, UserRecord } from 'types';
+import userService from '@services/usuarios';
 
 const checkLoginBody: RequestHandler<unknown, unknown, object, unknown> = (req, res, next) => {
   const body = req.body;
@@ -22,7 +23,27 @@ const checkRegisterBody: RequestHandler<unknown, unknown, RegisterUserBody, unkn
   return next();
 };
 
+const checkIsAdmin: RequestHandler<unknown, unknown, TurnBodyWithAuth, unknown> = async (req, res, next) => {
+  const userId = req.body.user.id;
+
+  if (!userId) return res.sendStatus(401);
+
+  try {
+    const user = await userService.getById(userId) as UserRecord;
+    const isAdmin = user.rol === UserRoles.Admin.valueOf();
+
+    return !isAdmin
+      ? res.sendStatus(401)
+      : next();
+
+  } catch(err) {
+    console.log(err);
+    return res.status(500).send({ message: 'Error al verificar privilegios' });
+  }
+};
+
 export {
   checkLoginBody,
   checkRegisterBody,
+  checkIsAdmin,
 };

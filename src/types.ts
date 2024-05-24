@@ -3,6 +3,12 @@ export interface UserRecord {
   email: string;
   nombre: string;
   password: string;
+  rol: string;
+}
+
+export enum UserRoles {
+  Admin = 'admin',
+  Client = 'client',
 }
 
 export interface TurnBasic {
@@ -58,4 +64,9 @@ export enum CanchasDisponibles {
   Cancha2 = 'cancha 2',
   Cancha3 = 'cancha 3',
   Cancha4 = 'cancha 4'
+}
+
+export interface DemoTurnosRequestBody {
+  fecha: string;
+  cancha: string;
 }
