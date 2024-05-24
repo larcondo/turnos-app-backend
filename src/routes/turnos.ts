@@ -2,14 +2,14 @@ import express from 'express';
 import { validateTurnBody, checkAuthorization } from '../middlewares/turnos';
 
 // controllers
-import getTurnos from '../controllers/getTurnos';
-import getTurnoById from '../controllers/getTurnoById';
-import countTurnos from '../controllers/countTurnos';
-import createTurno from '../controllers/createTurno';
-import updateTurno from '../controllers/updateTurno';
-import deleteTurno from '../controllers/deleteTurno';
-import solicitarTurno from '../controllers/solicitarTurno';
-import confirmarTurno from '../controllers/confirmarTurno';
+import getTurnos from '@controllers/turnos/getTurnos';
+import getTurnoById from '@controllers/turnos/getTurnoById';
+import countTurnos from '@controllers/turnos/countTurnos';
+import createTurno from '@controllers/turnos/createTurno';
+import updateTurno from '@controllers/turnos/updateTurno';
+import deleteTurno from '@controllers/turnos/deleteTurno';
+import solicitarTurno from '@controllers/turnos/solicitarTurno';
+import confirmarTurno from '@controllers/turnos/confirmarTurno';
 
 const router = express.Router();
 

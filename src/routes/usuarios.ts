@@ -2,9 +2,9 @@ import express from 'express';
 import userService from '@services/usuarios';
 import { checkLoginBody, checkRegisterBody } from '@middlewares/usuarios';
 
-import loginUsuario from '@controllers/loginUsuario';
-import registerUsuario from '@controllers/registerUsuario';
-import demoUsuarios from '@controllers/demoUsuarios';
+import loginUsuario from '@controllers/usuarios/loginUsuario';
+import registerUsuario from '@controllers/usuarios/registerUsuario';
+import demoUsuarios from '@controllers/usuarios/demoUsuarios';
 
 const router = express.Router();
 

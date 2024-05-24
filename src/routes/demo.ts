@@ -1,5 +1,5 @@
 import express from 'express';
-import demoTurnos from '@controllers/demoTurnos';
+import demoTurnos from '@controllers/demo/demoTurnos';
 import { checkAuthorization } from '@middlewares/turnos';
 import { checkIsAdmin } from '@middlewares/usuarios';
 

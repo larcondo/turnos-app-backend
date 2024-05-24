@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
-import { TurnBodyWithAuth, TurnRecord } from '../types';
+import { TurnBodyWithAuth, TurnRecord } from '../../types';
 
 const updateTurno: RequestHandler<
   { id: string },

@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import crypto from 'crypto';
 import turnService from '@services/turnos';
-import { TurnBody, TurnRecord, TurnStates } from '../types';
+import { TurnBody, TurnRecord, TurnStates } from '../../types';
 
 const createTurno: RequestHandler<
   unknown,

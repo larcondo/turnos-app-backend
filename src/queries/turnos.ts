@@ -16,7 +16,7 @@ export const ALL_TURNS: string =
 `SELECT id, cancha, estado, fecha, inicio, fin,
 solicitado_por AS solicitadoPor, confirmado_por as confirmadoPor
 FROM turnos
-ORDER BY fecha ASC
+ORDER BY fecha ASC, inicio ASC
 LIMIT 20;`;
 
 export const TURN_BY_ID: string = 'SELECT * FROM turnos WHERE id=?';

@@ -13,7 +13,7 @@ const getAll = (placeholders: string, values: string[]): Promise<TurnRecord[] | 
   solicitado_por AS solicitadoPor, confirmado_por as confirmadoPor
   FROM turnos
   WHERE ${placeholders}
-  ORDER BY fecha ASC
+  ORDER BY fecha ASC, inicio ASC
   LIMIT 20;`;
 
   const QUERY: string = values.length > 0 ? NEW_QUERY : ALL_TURNS;
