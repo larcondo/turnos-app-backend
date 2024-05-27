@@ -5,6 +5,7 @@ import { validateTurnBody, checkAuthorization } from '../middlewares/turnos';
 import getTurnos from '@controllers/turnos/getTurnos';
 import getTurnoById from '@controllers/turnos/getTurnoById';
 import countTurnos from '@controllers/turnos/countTurnos';
+import countYearMonthTurnos from '@controllers/turnos/countYearMonthTurnos';
 import createTurno from '@controllers/turnos/createTurno';
 import updateTurno from '@controllers/turnos/updateTurno';
 import deleteTurno from '@controllers/turnos/deleteTurno';
@@ -15,7 +16,9 @@ const router = express.Router();
 
 router.get('/', checkAuthorization, getTurnos); // all or specific
 
-router.get('/count',checkAuthorization, countTurnos);
+router.get('/count', checkAuthorization, countTurnos);
+
+router.get('/count/yearmonth', checkAuthorization, countYearMonthTurnos);
 
 router.get('/:id', checkAuthorization, getTurnoById); // get specific by id
 
@@ -28,5 +31,6 @@ router.delete('/:id', checkAuthorization, deleteTurno); // delete
 router.post('/solicitar/:id', checkAuthorization, solicitarTurno);
 
 router.post('/confirmar/:id', checkAuthorization, confirmarTurno);
+
 
 export default router;

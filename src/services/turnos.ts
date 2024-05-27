@@ -80,6 +80,19 @@ const countTurns = (c: string, d: string, i: string, f: string):Promise<number|E
   });
 };
 
+const countYearMonth = (yearmonth: string, estado: string): Promise<CountType[]|Error> => {
+  const QUERY: string = `SELECT COUNT(*) as cantidad, fecha FROM turnos
+  WHERE fecha LIKE ? AND estado=?
+  GROUP BY fecha;`;
+  return new Promise<CountType[]|Error>((resolve, reject) => {
+    db.all<CountType>(QUERY, [yearmonth, estado], (err, rows) => {
+      err
+        ? reject(err)
+        : resolve(rows);
+    });
+  });
+};
+
 const deleteOne = (id: string): Promise<number|Error> => {
   return new Promise<number|Error>((resolve, reject) => {
     db.run(DELETE_BY_ID, id, function(err) {
@@ -139,6 +152,7 @@ export default {
   insertOne,
   count,
   countTurns,
+  countYearMonth,
   updateOne,
   deleteOne,
   setRequestedBy,
