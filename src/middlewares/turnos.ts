@@ -1,3 +1,4 @@
+import cleanConfig from 'config/env';
 import jwt, { JsonWebTokenError } from 'jsonwebtoken';
 import { Request, Response, NextFunction, RequestHandler } from 'express';
 import { TurnBody, TokenPayload, TurnBodyWithAuth } from '../types';
@@ -49,11 +50,8 @@ const checkAuthorization: RequestHandler<unknown, unknown, TurnBodyWithAuth, unk
 
   const token = auth_array[1];
 
-  const secret: string|undefined = process.env.ACCESS_TOKEN_SECRET;
-
-  if (typeof secret !== 'string') return res.status(500).send({ message: 'Internal Server Error (Access Secret Undefined)' });
-
   try {
+    const secret = cleanConfig.ACCESS_TOKEN_SECRET;
     const payload = jwt.verify(token, secret);
     req.body.user = payload as TokenPayload;
     return next();

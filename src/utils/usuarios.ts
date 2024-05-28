@@ -1,18 +1,21 @@
-import dotenv from 'dotenv';
-dotenv.config();
+import cleanConfig from 'config/env';
 import jwt from 'jsonwebtoken';
+import { JWT_TOKEN_EXPIRATION } from '@constants/limits';
 import { TokenPayload } from 'types';
 
-const generateTokens = (userInfo: TokenPayload): string => {
-  const secret: string|undefined = process.env['ACCESS_TOKEN_SECRET'];
+const createAccessToken = (userInfo: TokenPayload): string => {
+  const secret = cleanConfig.ACCESS_TOKEN_SECRET;
 
-  if (typeof secret === 'string') {
-    return jwt.sign(userInfo, secret);
-  } else {
-    throw new Error('Access Token Secret is undefined');
-  }
+  return jwt.sign(userInfo, secret, { expiresIn: JWT_TOKEN_EXPIRATION });
+};
+
+const createRefreshToken = (userInfo: TokenPayload): string => {
+  const secret = cleanConfig.REFRESH_TOKEN_SECRET;
+
+  return jwt.sign(userInfo, secret);
 };
 
 export {
-  generateTokens
+  createAccessToken,
+  createRefreshToken,
 };

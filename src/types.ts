@@ -1,3 +1,5 @@
+import { JwtPayload } from 'jsonwebtoken';
+
 export interface UserRecord {
   id: string;
   email: string;
@@ -48,6 +50,15 @@ export interface QueryParams {
 }
 
 export interface TokenPayload {
+  id: string;
+  email: string;
+}
+
+export interface TokenCookie {
+  refreshToken: string;
+}
+
+export interface DecodedPayload extends JwtPayload {
   id: string;
   email: string;
 }

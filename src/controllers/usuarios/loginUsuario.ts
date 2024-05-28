@@ -1,8 +1,8 @@
 import bcrypt from 'bcrypt';
-import { RequestHandler } from 'express';
+import { RequestHandler, CookieOptions } from 'express';
 import userService from '@services/usuarios';
 import { UserRecord, TokenPayload } from 'types';
-import { generateTokens } from '@utils/usuarios';
+import { createAccessToken, createRefreshToken } from '@utils/usuarios';
 
 const loginUsuario: RequestHandler<
   unknown,
@@ -22,9 +22,19 @@ const loginUsuario: RequestHandler<
     if (!passValid) return res.status(403).send({ message: 'La contraseña es incorrecta.' });
 
     const payload: TokenPayload = { id: row.id, email };
-    const token = generateTokens(payload);
+    const accessToken = createAccessToken(payload);
+    const refreshToken = createRefreshToken(payload);
 
-    return res.status(200).send({ accessToken: token, email: row.email, nombre: row.nombre });
+    const options: CookieOptions = {
+      httpOnly: true,
+      secure: true,
+      sameSite: 'none',
+      maxAge: 60*60*1000,
+    };
+
+    res.cookie('refreshToken', refreshToken, options);
+
+    return res.status(200).send({ accessToken, email: row.email, nombre: row.nombre });
 
   } catch(err) {
     console.log(err);

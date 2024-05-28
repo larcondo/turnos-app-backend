@@ -3,6 +3,8 @@ import userService from '@services/usuarios';
 import { checkLoginBody, checkRegisterBody } from '@middlewares/usuarios';
 
 import loginUsuario from '@controllers/usuarios/loginUsuario';
+import refreshUsuario from '@controllers/usuarios/refreshUsuario';
+import logoutUsuario from '@controllers/usuarios/logoutUsuario';
 import registerUsuario from '@controllers/usuarios/registerUsuario';
 import demoUsuarios from '@controllers/usuarios/demoUsuarios';
 
@@ -19,6 +21,8 @@ router.get('/', async (_req, res) => {
 });
 
 router.post('/login', checkLoginBody, loginUsuario);
+router.get('/refresh', refreshUsuario);
+router.get('/logout', logoutUsuario);
 router.post('/register', checkRegisterBody, registerUsuario);
 router.post('/demo', demoUsuarios);
 

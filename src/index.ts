@@ -1,20 +1,26 @@
+import cleanConfig from 'config/env';
 import dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import authApp from 'authapp';
 import cors, { CorsOptions } from 'cors';
+import cookieParser from 'cookie-parser';
+
 const app = express();
 
 // configure later on PM2?
-const API_PORT = process.env.API_PORT || 3010;
-const AUTH_PORT = process.env.AUTH_PORT || 4010;
+const API_PORT = cleanConfig.API_PORT;
+const AUTH_PORT = cleanConfig.AUTH_PORT;
 
 const allowedOrigins = ['http://localhost:5173'];
 const options: CorsOptions = {
   origin: allowedOrigins,
   methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true,
+  optionsSuccessStatus: 200,
 };
 
+app.use(cookieParser());
 app.use(cors(options));
 app.use(express.json());
 
