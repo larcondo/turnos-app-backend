@@ -8,6 +8,12 @@ type CountType = {
   cantidad: number;
 };
 
+type CountGroup = {
+  cantidad: number;
+  cancha?: string;
+  fecha?: string;
+};
+
 const getAll = (placeholders: string, values: string[]): Promise<TurnRecord[] | Error> => {
   const NEW_QUERY: string = `SELECT id, cancha, estado, fecha, inicio, fin,
   solicitado_por AS solicitadoPor, confirmado_por as confirmadoPor
@@ -66,6 +72,20 @@ const count = (placeholders: string, values: string[]):Promise<number|Error> => 
       err
         ? reject(err)
         : resolve(row.cantidad);
+    });
+  });
+};
+
+const countAndGroup = (strGroup: string, strDate: string | undefined =  undefined): Promise<CountGroup[] | Error> => {
+  const QUERY: string = strDate
+  ? `SELECT ${strGroup}, COUNT(*) AS cantidad FROM turnos WHERE fecha="${strDate}" AND estado="disponible" GROUP BY ${strGroup};`
+  : `SELECT ${strGroup}, COUNT(*) AS cantidad FROM turnos GROUP BY ${strGroup};`;
+
+  return new Promise<CountGroup[] | Error>((resolve, reject) => {
+    db.all<CountGroup>(QUERY, (err, rows) => {
+      err
+        ? reject(err)
+        : resolve(rows);
     });
   });
 };
@@ -151,6 +171,7 @@ export default {
   getById,
   insertOne,
   count,
+  countAndGroup,
   countTurns,
   countYearMonth,
   updateOne,
