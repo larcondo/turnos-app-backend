@@ -26,7 +26,7 @@ const getById = (id: string): Promise<UserRecord|Error> => {
 };
 
 const getByEmail = (email: string): Promise<UserRecord|Error> => {
-  const QUERY: string = 'SELECT id, nombre, email, password FROM usuarios WHERE email=?;';
+  const QUERY: string = 'SELECT id, nombre, email, password, rol FROM usuarios WHERE email=?;';
 
   return new Promise<UserRecord|Error>((resolve, reject) => {
     db.get<UserRecord>(QUERY, [email], function(err, row) {

@@ -34,7 +34,12 @@ const loginUsuario: RequestHandler<
 
     res.cookie('refreshToken', refreshToken, options);
 
-    return res.status(200).send({ accessToken, email: row.email, nombre: row.nombre });
+    return res.status(200).send({
+      accessToken,
+      email: row.email,
+      nombre: row.nombre,
+      rol: row.rol
+    });
 
   } catch(err) {
     console.log(err);
