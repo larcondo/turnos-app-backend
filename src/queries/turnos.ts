@@ -45,3 +45,15 @@ fecha=?, inicio=?, fin=?,
 solicitado_por=?, confirmado_por=?,
 updated_at=CURRENT_TIMESTAMP
 WHERE id=?;`;
+
+export const TURNS_REQUESTED_BY_DATE =
+`SELECT
+turnos.id, turnos.cancha, turnos.estado,
+usuarios.nombre, usuarios.email,
+turnos.fecha, turnos.inicio, turnos.fin,
+turnos.solicitado_por AS solicitadoPor,
+turnos.confirmado_por AS confirmadoPor
+FROM turnos
+INNER JOIN usuarios
+ON usuarios.id=turnos.solicitado_por
+WHERE estado=? AND fecha=?`;

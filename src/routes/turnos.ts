@@ -1,9 +1,11 @@
 import express from 'express';
-import { validateTurnBody, checkAuthorization } from '../middlewares/turnos';
+import { validateTurnBody, checkAuthorization } from '@middlewares/turnos';
+import { checkIsAdmin } from '@middlewares/usuarios';
 
 // controllers
 import getTurnos from '@controllers/turnos/getTurnos';
 import getTurnoById from '@controllers/turnos/getTurnoById';
+import getRequestedTurnos from '@controllers/turnos/getRequestedTurnos';
 import countTurnos from '@controllers/turnos/countTurnos';
 import countAndGroup from '@controllers/turnos/countAndGroupTurnos';
 import countYearMonthTurnos from '@controllers/turnos/countYearMonthTurnos';
@@ -22,6 +24,8 @@ router.get('/count', checkAuthorization, countTurnos);
 router.get('/count-and-group', checkAuthorization, countAndGroup);
 
 router.get('/count/yearmonth', checkAuthorization, countYearMonthTurnos);
+
+router.get('/solicitados', checkAuthorization, checkIsAdmin, getRequestedTurnos);
 
 router.get('/:id', checkAuthorization, getTurnoById); // get specific by id
 

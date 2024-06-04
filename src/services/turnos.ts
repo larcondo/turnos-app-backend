@@ -1,6 +1,6 @@
 import db from '../database';
 import { ALL_TURNS, TURN_BY_ID, COUNT_TOTAL_TURNS, INSERT_ONE,
-  DELETE_BY_ID, UPDATE_BY_ID, COUNT_SPECIFIC_TURN
+  DELETE_BY_ID, UPDATE_BY_ID, COUNT_SPECIFIC_TURN, TURNS_REQUESTED_BY_DATE
 } from '@queries/turnos';
 import { TurnRecord, TurnStates } from '../types';
 
@@ -39,6 +39,16 @@ const getById = (id: string): Promise<TurnRecord|Error> => {
       err
         ? reject(err)
         : resolve(row);
+    });
+  });
+};
+
+const getRequestedTurns = (fecha: string): Promise<TurnRecord[] | Error> => {
+  return new Promise<TurnRecord[] | Error>((resolve, reject) => {
+    db.all<TurnRecord>(TURNS_REQUESTED_BY_DATE, [TurnStates.Solicitado, fecha], (err, rows) => {
+      err
+        ? reject(err)
+        : resolve(rows);
     });
   });
 };
@@ -169,6 +179,7 @@ const setConfirmBy = (tid: string, uid: string): Promise<number|Error> => {
 export default {
   getAll,
   getById,
+  getRequestedTurns,
   insertOne,
   count,
   countAndGroup,
