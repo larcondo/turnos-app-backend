@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
-import { TurnBodyWithAuth } from 'types';
+import { TurnBodyWithAuth, TurnStates } from 'types';
 
 const solicitarTurno: RequestHandler<
   { id: string },
@@ -14,16 +14,15 @@ const solicitarTurno: RequestHandler<
   try {
     const result = await turnService.setRequestedBy(turnId, user.id) as number;
 
-    if (result < 1) {
+    if (result < 1)
       return res.status(401).send({ message: `Turno no disponible.`});
-    } else {
-      const reqResult = {
-        id: user.id,
-        estado: 'solicitado',
-        solicitadoPor: turnId
-      };
-      return res.status(200).send(reqResult);
-    }
+
+    const reqResult = {
+      id: turnId,
+      estado: TurnStates.Solicitado,
+      solicitadoPor: user.id
+    };
+    return res.status(200).send(reqResult);
   } catch(err) {
     console.log(err);
     return res.status(500).send({ message: 'Hubo un error al solicitar el turno.' });

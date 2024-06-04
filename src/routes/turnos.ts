@@ -37,7 +37,7 @@ router.delete('/:id', checkAuthorization, deleteTurno); // delete
 
 router.post('/solicitar/:id', checkAuthorization, solicitarTurno);
 
-router.post('/confirmar/:id', checkAuthorization, confirmarTurno);
+router.post('/confirmar/:id', checkAuthorization, checkIsAdmin, confirmarTurno);
 
 
 export default router;
