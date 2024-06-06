@@ -7,6 +7,7 @@ const logoutUsuario: RequestHandler = (req, res) => {
   if (!cookies.refreshToken) return res.status(200).send({ message: 'No refresh token found.' });
 
   try {
+    res.clearCookie('autologin');
     res.clearCookie('refreshToken');
     return res.status(200).send({ message: 'Logout successfull.' });
   } catch(err) {
