@@ -1,16 +1,13 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
-
-interface GroupReqQuery {
-  group: string;
-  fecha: string;
-}
+import { CountAndGroupResBody, CountAndGroupSearchQuery } from '@controllers/turnos/types';
+import { CountGroup } from 'types';
 
 const countAndGroup: RequestHandler<
   unknown,
+  CountAndGroupResBody,
   unknown,
-  unknown,
-  GroupReqQuery
+  CountAndGroupSearchQuery
 > = async (req, res) => {
   const query = req.query;
 
@@ -28,7 +25,7 @@ const countAndGroup: RequestHandler<
       return res.sendStatus(400);
     }
 
-    const cantidades = await turnService.countAndGroup(group, fecha);
+    const cantidades = await turnService.countAndGroup(group, fecha) as CountGroup[];
     return res.status(200).send(cantidades);    
   } catch(err) {
     console.log(err);

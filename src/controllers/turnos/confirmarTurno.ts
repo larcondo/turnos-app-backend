@@ -1,10 +1,11 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
 import { TurnBodyWithAuth, TurnStates } from 'types';
+import { ConfirmarTurnoParams, ConfirmarTurnoResBody } from '@controllers/turnos/types';
 
 const confirmarTurno: RequestHandler<
-  { id: string},
-  unknown,
+  ConfirmarTurnoParams,
+  ConfirmarTurnoResBody,
   TurnBodyWithAuth,
   unknown
 > = async (req, res) => {

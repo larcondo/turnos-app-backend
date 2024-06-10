@@ -4,8 +4,14 @@ import userService from '@services/usuarios';
 import { RequestHandler } from 'express';
 import { createAccessToken } from '@utils/usuarios';
 import { TokenPayload, TokenCookie, DecodedPayload, UserRecord } from 'types';
+import { RefreshResBody } from '@controllers/usuarios/types';
 
-const refreshUsuario: RequestHandler = async (req, res) => {
+const refreshUsuario: RequestHandler<
+  unknown,
+  RefreshResBody,
+  unknown,
+  unknown
+> = async (req, res) => {
   const cookies = req.cookies as TokenCookie;
 
   if (!cookies?.refreshToken) return res.sendStatus(401);

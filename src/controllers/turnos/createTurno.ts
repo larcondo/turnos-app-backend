@@ -1,11 +1,12 @@
 import { RequestHandler } from 'express';
 import crypto from 'crypto';
 import turnService from '@services/turnos';
-import { TurnBody, TurnRecord, TurnStates } from '../../types';
+import { TurnBody, TurnRecord, TurnStates } from 'types';
+import { CreateTurnoResBody } from '@controllers/turnos/types';
 
 const createTurno: RequestHandler<
   unknown,
-  unknown,
+  CreateTurnoResBody,
   TurnBody,
   unknown
 > = async (req, res) => {
@@ -28,7 +29,7 @@ const createTurno: RequestHandler<
     
     if (cantidad > 0) return res.status(401).send({ message: `Un turno el ${fecha} de ${inicio} a ${fin} ya existe!` });
 
-    const created = await turnService.insertOne(newTurn);
+    const created = await turnService.insertOne(newTurn) as TurnRecord;
 
     return res.status(201).send(created);
 

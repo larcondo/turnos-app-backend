@@ -1,6 +1,4 @@
-export type BaseErrorMsg = {
-  message: string;
-};
+import { UserRecord, BaseErrorMsg } from "types";
 
 export interface LoginReqBody {
   email: string;
@@ -19,3 +17,15 @@ type LoginSuccess = {
 };
 
 export type LoginResBody = LoginSuccess | LoginReqError | BaseErrorMsg;
+
+export type LogoutResBody = BaseErrorMsg;
+
+export type RefreshResBody = BaseErrorMsg | LoginSuccess;
+
+export interface RegisterReqBody {
+  email: string;
+  password: string;
+  nombre: string;
+}
+
+export type RegisterResBody = BaseErrorMsg | UserRecord;

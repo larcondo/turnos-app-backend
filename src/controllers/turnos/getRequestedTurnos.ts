@@ -1,25 +1,22 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
-
-interface ReqQuery {
-  fecha: string;
-}
+import { TurnosSolicitadosReqQuery, TurnosSolicitadosResBody } from '@controllers/turnos/types';
+import { TurnRecord } from 'types';
 
 const getRequestedTurnos: RequestHandler<
   unknown,
+  TurnosSolicitadosResBody,
   unknown,
-  unknown,
-  ReqQuery
+  TurnosSolicitadosReqQuery
 > = async (req, res) => {
-  const q = req.query;
-  const { fecha } = q;
+  const { fecha } = req.query;
 
   if (!fecha) {
     return res.status(400).send({ message: 'Se requiere el parámetro fecha [YYYY-MM-DD]' });
   }
 
   try {
-    const turnos = await turnService.getRequestedTurns(fecha);
+    const turnos = await turnService.getRequestedTurns(fecha) as TurnRecord[];
     return res.status(200).send(turnos);
   } catch(err) {
     console.log(err);

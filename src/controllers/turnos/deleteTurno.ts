@@ -1,9 +1,10 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
+import { DeleteTurnoParams, DeleteResBody } from '@controllers/turnos/types';
 
 const deleteTurno: RequestHandler<
-  { id: string },
-  unknown,
+  DeleteTurnoParams,
+  DeleteResBody,
   unknown,
   unknown
 > = async (req, res) => {

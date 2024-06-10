@@ -1,10 +1,11 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
 import { TurnBodyWithAuth, TurnStates } from 'types';
+import { SolicitarTurnoParams, SolicitarTurnoResBody } from '@controllers/turnos/types';
 
 const solicitarTurno: RequestHandler<
-  { id: string },
-  unknown,
+  SolicitarTurnoParams,
+  SolicitarTurnoResBody,
   TurnBodyWithAuth,
   unknown
 > = async (req, res) => {

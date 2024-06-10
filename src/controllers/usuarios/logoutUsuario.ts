@@ -1,7 +1,13 @@
 import { RequestHandler } from 'express';
 import { TokenCookie } from 'types';
+import { LogoutResBody } from '@controllers/usuarios/types';
 
-const logoutUsuario: RequestHandler = (req, res) => {
+const logoutUsuario: RequestHandler<
+  unknown,
+  LogoutResBody,
+  unknown,
+  unknown
+> = (req, res) => {
   const cookies = req.cookies as TokenCookie;
 
   if (!cookies.refreshToken) return res.status(200).send({ message: 'No refresh token found.' });

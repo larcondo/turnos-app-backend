@@ -1,12 +1,13 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
-import { TurnStates } from 'types';
+import { TurnStates, TurnosQuantity } from 'types';
+import { CountYearMonthResBody, CountYearMonthSearhQuery } from '@controllers/turnos/types';
 
 const countYearMonthTurnos: RequestHandler<
   unknown,
+  CountYearMonthResBody,
   unknown,
-  unknown,
-  object
+  CountYearMonthSearhQuery
 > = async (req, res) => {
   const query = req.query;
   const params = [];
@@ -23,7 +24,7 @@ const countYearMonthTurnos: RequestHandler<
   }
 
   try {
-    const turnosCantidad = await turnService.countYearMonth(params[0], params[1]);
+    const turnosCantidad = await turnService.countYearMonth(params[0], params[1]) as TurnosQuantity[];
     res.send(turnosCantidad);
   } catch(err) {
     console.log(err);

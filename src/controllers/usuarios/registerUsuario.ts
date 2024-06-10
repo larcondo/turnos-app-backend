@@ -2,12 +2,13 @@ import crypto from 'crypto';
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
 import userService from '@services/usuarios';
-import { RegisterUserBody, UserRecord } from 'types';
+import { UserRecord } from 'types';
+import { RegisterResBody, RegisterReqBody } from '@controllers/usuarios/types';
 
 const registerUsuario: RequestHandler<
   unknown,
-  unknown,
-  RegisterUserBody,
+  RegisterResBody,
+  RegisterReqBody,
   unknown
 > = async (req, res) => {
   try {
@@ -17,7 +18,7 @@ const registerUsuario: RequestHandler<
 
     const newUser: UserRecord = { id, email, nombre, password: hashedPassword };
 
-    const created = await userService.insertOne(newUser);
+    const created = await userService.insertOne(newUser) as UserRecord;
 
     res.status(201).send(created);
   } catch(err) {

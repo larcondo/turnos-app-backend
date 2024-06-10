@@ -1,5 +1,9 @@
 import { JwtPayload } from 'jsonwebtoken';
 
+export type BaseErrorMsg = {
+  message: string;
+};
+
 export interface UserRecord {
   id: string;
   email: string;
@@ -34,11 +38,6 @@ export interface TurnBodyWithAuth extends TurnBody {
 
 export type UserBody = Omit<UserRecord, 'id'|'password'>;
 
-export interface RegisterUserBody {
-  email: string;
-  password: string;
-  nombre: string;
-}
 
 export interface AuthBodyBasic {
   token: string;
@@ -80,4 +79,14 @@ export enum CanchasDisponibles {
 export interface DemoTurnosRequestBody {
   fecha: string;
   cancha: string;
+}
+
+export interface TurnosQuantity {
+  cantidad: number;
+}
+
+export interface CountGroup {
+  cantidad: number;
+  cancha?: string;
+  fecha?: string;
 }

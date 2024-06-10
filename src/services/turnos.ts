@@ -2,17 +2,11 @@ import db from '../database';
 import { ALL_TURNS, TURN_BY_ID, COUNT_TOTAL_TURNS, INSERT_ONE,
   DELETE_BY_ID, UPDATE_BY_ID, COUNT_SPECIFIC_TURN, TURNS_REQUESTED_BY_DATE
 } from '@queries/turnos';
-import { TurnRecord, TurnStates } from '../types';
+import { TurnRecord, TurnStates, CountGroup, TurnosQuantity } from 'types';
 
-type CountType = {
-  cantidad: number;
-};
-
-type CountGroup = {
-  cantidad: number;
-  cancha?: string;
-  fecha?: string;
-};
+// type CountType = {
+//   cantidad: number;
+// };
 
 const getAll = (placeholders: string, values: string[]): Promise<TurnRecord[] | Error> => {
   const NEW_QUERY: string = `SELECT id, cancha, estado, fecha, inicio, fin,
@@ -78,7 +72,7 @@ const count = (placeholders: string, values: string[]):Promise<number|Error> => 
   const QUERY: string = values.length > 0 ? NEW_QUERY : COUNT_TOTAL_TURNS;
 
   return new Promise<number|Error>((resolve, reject) => {
-    db.get<CountType>(QUERY, values, (err, row) => {
+    db.get<TurnosQuantity>(QUERY, values, (err, row) => {
       err
         ? reject(err)
         : resolve(row.cantidad);
@@ -102,7 +96,7 @@ const countAndGroup = (strGroup: string, strDate: string | undefined =  undefine
 
 const countTurns = (c: string, d: string, i: string, f: string):Promise<number|Error> => {
   return new Promise<number|Error>((resolve, reject) => {
-    db.get<CountType>(COUNT_SPECIFIC_TURN, [c, d, i, f], (err, row) => {
+    db.get<TurnosQuantity>(COUNT_SPECIFIC_TURN, [c, d, i, f], (err, row) => {
       err
         ? reject(err)
         : resolve(row.cantidad);
@@ -110,12 +104,12 @@ const countTurns = (c: string, d: string, i: string, f: string):Promise<number|E
   });
 };
 
-const countYearMonth = (yearmonth: string, estado: string): Promise<CountType[]|Error> => {
+const countYearMonth = (yearmonth: string, estado: string): Promise<TurnosQuantity[]|Error> => {
   const QUERY: string = `SELECT COUNT(*) as cantidad, fecha FROM turnos
   WHERE fecha LIKE ? AND estado=?
   GROUP BY fecha;`;
-  return new Promise<CountType[]|Error>((resolve, reject) => {
-    db.all<CountType>(QUERY, [yearmonth, estado], (err, rows) => {
+  return new Promise<TurnosQuantity[]|Error>((resolve, reject) => {
+    db.all<TurnosQuantity>(QUERY, [yearmonth, estado], (err, rows) => {
       err
         ? reject(err)
         : resolve(rows);

@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
-import { RegisterUserBody, UserRoles, TurnBodyWithAuth, UserRecord } from 'types';
+import { UserRoles, TurnBodyWithAuth, UserRecord } from 'types';
+import { RegisterReqBody } from '@controllers/usuarios/types';
 import userService from '@services/usuarios';
 
 const checkLoginBody: RequestHandler<unknown, unknown, object, unknown> = (req, res, next) => {
@@ -12,7 +13,7 @@ const checkLoginBody: RequestHandler<unknown, unknown, object, unknown> = (req, 
   }
 };
 
-const checkRegisterBody: RequestHandler<unknown, unknown, RegisterUserBody, unknown> = (req, res, next) => {
+const checkRegisterBody: RequestHandler<unknown, unknown, RegisterReqBody, unknown> = (req, res, next) => {
   const { email, nombre, password } = req.body;
 
   if (!email || !nombre || !password) return res.status(400).send({ message: 'email, password and nombre required!' });

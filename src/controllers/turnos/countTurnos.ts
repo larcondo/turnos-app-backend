@@ -1,17 +1,18 @@
 import { RequestHandler } from 'express';
 import turnService from '@services/turnos';
 import { getQueryParams } from '@utils/turnos';
+import { CountTurnosResBody, TurnoSearchQuery } from '@controllers/turnos/types';
 
 const countTurnos: RequestHandler<
   unknown,
+  CountTurnosResBody,
   unknown,
-  unknown,
-  object
+  TurnoSearchQuery
 > = async (req, res) => {
   const p = getQueryParams(req.query);
 
   try {
-    const cantidad = await turnService.count(p.placeholders, p.values);
+    const cantidad = await turnService.count(p.placeholders, p.values) as number;
     res.send({ cantidad });
   } catch(err) {
     console.log(err);
